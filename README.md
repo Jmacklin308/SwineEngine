@@ -2,9 +2,9 @@
 
 
 
-Game engine i'm working on for my game "Swine". This project is mostly to develop my skills as a developer and further my knowledge in Java. If you find this idk if it'll be much of a help to you but your more than welcome to go digging around :) 
+Game engine i'm working on for my game "Swine". This project is mostly to develop my skills as a developer and further my knowledge in Java. this isn't complete by no means (as of 2/24/2022) but if you find it helpful in any way let me know :)
 
-[libGDX](https://libgdx.com/) 
+Check out [libGDX](https://libgdx.com/) 
 
 ## Gradle info:
 
