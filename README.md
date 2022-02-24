@@ -1,10 +1,12 @@
 # swineGame
 
-A [libGDX](https://libgdx.com/) project generated with [gdx-liftoff](https://github.com/tommyettinger/gdx-liftoff).
 
-This project was generated with a template including simple application launchers and an `ApplicationAdapter` extension that draws libGDX logo.
 
-## Gradle
+Game engine i'm working on for my game "Swine". This project is mostly to develop my skills as a developer and further my knowledge in Java. If you find this idk if it'll be much of a help to you but your more than welcome to go digging around :) 
+
+[libGDX](https://libgdx.com/) 
+
+## Gradle info:
 
 This project uses [Gradle](http://gradle.org/) to manage dependencies.
 The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
