@@ -16,16 +16,11 @@ import java.util.Random;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class swineGame extends ApplicationAdapter
 {
-
-
-	//
-	//Draw our ball
 	ShapeRenderer shape;
 	Ball ball;
 	int totalNumofBalls = 10;
 	ArrayList<Ball> balls = new ArrayList<>();
 	Random random = new Random();
-
 
 	//for debuging
 	FrameRate frameRate;
@@ -41,7 +36,7 @@ public class swineGame extends ApplicationAdapter
 			float randX = random.nextInt(Gdx.graphics.getWidth());
 			float randY = random.nextInt(Gdx.graphics.getHeight());
 			int randSize = random.nextInt(15);
-			float randSpeed = (float) random.nextInt(5);
+			float randSpeed = (float) random.nextInt(50);
 
 			//load up array
 			Ball ball = new Ball(new Vector2(randX,randY),randSize,new Vector2(randSpeed,randSpeed));

@@ -20,8 +20,9 @@ public class Ball
 
 	public void Update()
 	{
-		position.x += speed.x;
-		position.y += speed.y;
+		float dt = Gdx.graphics.getDeltaTime();
+		position.x += speed.x * dt;
+		position.y += speed.y * dt;
 
 		if(position.x > Gdx.graphics.getWidth() || position.x < 0) speed.x = -speed.x;
 		if(position.y > Gdx.graphics.getHeight() || position.y < 0) speed.y = -speed.y;
