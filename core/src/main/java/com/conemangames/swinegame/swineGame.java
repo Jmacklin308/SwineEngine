@@ -55,18 +55,17 @@ public class swineGame extends ApplicationAdapter
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		shape.begin(ShapeRenderer.ShapeType.Filled);
-
-		frameRate.update();
-		frameRate.render();
-
-		//draw each ball
-		for(Ball ball : balls)
-		{
-			ball.Update();
-			ball.Draw(shape);
-		}
-
+			frameRate.update();
+			//draw each ball
+			for(Ball ball : balls)
+			{
+				ball.Update();
+				ball.Draw(shape);
+			}
 		shape.end();
+
+		//draw on top
+		frameRate.render();
 	}
 
 
@@ -80,5 +79,4 @@ public class swineGame extends ApplicationAdapter
 
 		return new Color(r,g,b,a);
 	}
-
 }
