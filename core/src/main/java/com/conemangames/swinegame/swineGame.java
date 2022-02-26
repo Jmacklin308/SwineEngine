@@ -3,6 +3,7 @@ package com.conemangames.swinegame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Graphics;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -18,7 +19,7 @@ public class swineGame extends ApplicationAdapter
 {
 	ShapeRenderer shape;
 	Ball ball;
-	int totalNumofBalls = 10;
+	int totalNumofBalls = 1000;
 	ArrayList<Ball> balls = new ArrayList<>();
 	Random random = new Random();
 
@@ -37,6 +38,9 @@ public class swineGame extends ApplicationAdapter
 			float randY = random.nextInt(Gdx.graphics.getHeight());
 			int randSize = random.nextInt(15);
 			float randSpeed = (float) random.nextInt(50);
+
+			Color randColor = RandomColor();
+
 
 			//load up array
 			Ball ball = new Ball(new Vector2(randX,randY),randSize,new Vector2(randSpeed,randSpeed));
@@ -64,4 +68,17 @@ public class swineGame extends ApplicationAdapter
 
 		shape.end();
 	}
+
+
+	public Color RandomColor()
+	{
+		random = new Random();
+		int r = random.nextInt(70);
+		int g = 20;
+		int b = 20;
+		int a = 100;
+
+		return new Color(r,g,b,a);
+	}
+
 }

@@ -1,14 +1,19 @@
 package com.conemangames.swinegame;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+
+import java.util.Random;
 
 public class Ball
 {
 	Vector2 position;
 	int size;
 	Vector2 speed;
+	Color color;
+	Random random;
 
 	//constructor
 	public Ball(Vector2 position, int size, Vector2 speed)
@@ -16,6 +21,12 @@ public class Ball
 		this.position = position;
 		this.size = size;
 		this.speed = speed;
+
+		//create random
+		random = new Random();
+
+		// set a random color
+		RandomColor();
 	}
 
 	public void Update()
@@ -28,8 +39,22 @@ public class Ball
 		if(position.y > Gdx.graphics.getHeight() || position.y < 0) speed.y = -speed.y;
 	}
 
+
+	public void RandomColor()
+	{
+		float r = random.nextFloat();
+		float g = random.nextFloat();
+		float b = random.nextFloat();
+		float a = 100;
+
+		color = new Color(r,g,b,a);
+
+	}
+
+
 	public void Draw(ShapeRenderer shape)
 	{
 		shape.circle(position.x,position.y,size);
+		shape.setColor(color);
 	}
 }
