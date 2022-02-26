@@ -22,11 +22,10 @@ public class Ball
 		this.size = size;
 		this.speed = speed;
 
-		//create random
+		//create random object
 		random = new Random();
 
-		// set a random color
-		RandomColor();
+		SetRandomColor();
 	}
 
 	public void Update()
@@ -40,7 +39,7 @@ public class Ball
 	}
 
 
-	public void RandomColor()
+	public void SetRandomColor()
 	{
 		float r = random.nextFloat();
 		float g = random.nextFloat();
