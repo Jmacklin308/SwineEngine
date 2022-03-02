@@ -2,7 +2,7 @@ package com.conemangames.swinegame.lwjgl3;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
-import com.conemangames.swinegame.swineGame;
+import com.conemangames.swinegame.SwineGame;
 
 /** Launches the desktop (LWJGL3) application. */
 public class Lwjgl3Launcher {
@@ -11,7 +11,7 @@ public class Lwjgl3Launcher {
 	}
 
 	private static Lwjgl3Application createApplication() {
-		return new Lwjgl3Application(new swineGame(), getDefaultConfiguration());
+		return new Lwjgl3Application(new SwineGame(), getDefaultConfiguration());
 	}
 
 	private static Lwjgl3ApplicationConfiguration getDefaultConfiguration() {

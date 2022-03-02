@@ -15,6 +15,12 @@ public class Ball
 	Color color;
 	Random random;
 
+	//for hitting sides
+	Color cRed = new Color(200,0,0,1);
+	Color cBlue = new Color(0,0,200,1);
+	Color cGreen = new Color(0,200,0,1);
+	Color cWhite = new Color(200,200,200,1);
+
 	//constructor
 	public Ball(Vector2 position, int size, Vector2 speed)
 	{
@@ -25,7 +31,8 @@ public class Ball
 		//create random object
 		random = new Random();
 
-		SetRandomColor();
+		color = Color.CYAN;
+
 	}
 
 	public void Update()
@@ -34,8 +41,23 @@ public class Ball
 		position.x += speed.x * dt;
 		position.y += speed.y * dt;
 
-		if(position.x > Gdx.graphics.getWidth() || position.x < 0) speed.x = -speed.x;
-		if(position.y > Gdx.graphics.getHeight() || position.y < 0) speed.y = -speed.y;
+		if(position.x > Gdx.graphics.getWidth() )
+		{
+			color = cRed;
+			speed.x = -speed.x;
+		}else if(position.x < 0)
+		{
+			color = cBlue;
+			speed.x = -speed.x;
+		}
+		if(position.y > Gdx.graphics.getHeight())
+		{
+			color = cGreen;
+			speed.y = -speed.y;
+		}else if(position.y < 0) {
+			color = cWhite;
+			speed.y = -speed.y;
+		}
 	}
 
 
@@ -47,7 +69,6 @@ public class Ball
 		float a = 100;
 
 		color = new Color(r,g,b,a);
-
 	}
 
 

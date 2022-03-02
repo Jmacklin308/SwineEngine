@@ -33,7 +33,7 @@ public class FrameRate implements Disposable{
 
     public void resize(int screenWidth, int screenHeight) {
         cam = new OrthographicCamera(screenWidth, screenHeight);
-        cam.translate(screenWidth / 2, screenHeight / 2);
+        cam.translate(screenWidth / 2f, screenHeight / 2f);
         cam.update();
         batch.setProjectionMatrix(cam.combined);
     }
