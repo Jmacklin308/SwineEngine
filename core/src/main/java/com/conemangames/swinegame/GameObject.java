@@ -27,27 +27,53 @@ public class GameObject
     
     }
     
-    public void Initialize()
+    public void Create()
     {
+        center = new Vector2().setZero();
     
     }
     
     
-    //Load the image of the object in question
-    public void Load(SpriteBatch spriteBatch)
+    // Ran first
+    public void Load()
     {
-    
+        CalculateCenter();
     }
 
-    //access all game objects in game
+    //Called every frame. Update logic here
     public void Update(List<GameObject> objects)
     {
     
     }
     
+    //Called every frame. Update draw calls here
     public void Draw(SpriteBatch spriteBatch)
     {
-    
+        if (texture != null && active)
+        {
+            spriteBatch.draw(texture,position.x,
+                    position.y,
+                    center.x,
+                    center.y,
+                    texture.getWidth(),
+                    texture.getHeight(),
+                    scale,scale,rotation,
+                    1,
+                    1,
+                    1,
+                    1,
+                    false,
+                    false
+            );
+        }
     }
-
+    
+    private void CalculateCenter()
+    {
+        if(texture == null)
+            return;
+        
+        center.x = texture.getWidth() / 2f;
+        center.y = texture.getHeight() / 2f;
+    }
 }
