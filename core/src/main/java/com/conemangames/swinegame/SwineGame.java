@@ -18,11 +18,8 @@ import java.util.Random;
 /** {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms. */
 public class SwineGame extends ApplicationAdapter
 {
+
 	ShapeRenderer shape;
-	Ball ball;
-	int totalNumofBalls = 1000;
-	ArrayList<Ball> balls = new ArrayList<>();
-	Random random = new Random();
 
 	//for debuging
 	FrameRate frameRate;
@@ -31,13 +28,13 @@ public class SwineGame extends ApplicationAdapter
 	World world;
 	Box2DDebugRenderer debugRenderer;
 
+	//camera
 	PerspectiveCamera camera;
 
 	public void create()
 	{
 		frameRate = new FrameRate();
 		shape = new ShapeRenderer();
-		GenerateBalls(totalNumofBalls, shape);
 
 		//camera setup
 		camera = new PerspectiveCamera(70,(float)Gdx.graphics.getWidth(),(float) Gdx.graphics.getHeight());
@@ -53,20 +50,33 @@ public class SwineGame extends ApplicationAdapter
 	@Override
 	public void render()
 	{
+		Update();
+		Draw();
+	}
+	
+	private void Update()
+	{
+		
+		//update camera
+		camera.update();
+		
+		//update framerate;
+		frameRate.update();
+		
+		
+		//update physics step
+		world.step(1/60f, 6,2);
+	
+	}
+	
+	private void Draw()
+	{
 		//clear background
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-		//start camera
-		camera.update();
-
+	
+		
 		shape.begin(ShapeRenderer.ShapeType.Filled);
-			frameRate.update();
-			//draw each ball
-			for(Ball ball : balls)
-			{
-				ball.Update();
-				ball.Draw(shape);
-			}
+		
 
 		shape.end();
 
@@ -75,39 +85,8 @@ public class SwineGame extends ApplicationAdapter
 
 		//update physics debug (must be done before physics step
 		debugRenderer.render(world, camera.combined);
-
-		//update physics step
-		world.step(1/60f, 6,2);
+		
+		
 	}
-
-	private void GenerateBalls(int totalNumofBalls, ShapeRenderer shape)
-	{
-		for (int i = 0; i < totalNumofBalls; i++)
-		{
-			//rand properties
-			float randX = random.nextInt(Gdx.graphics.getWidth());
-			float randY = random.nextInt(Gdx.graphics.getHeight());
-			int randSize = random.nextInt(15);
-			float randSpeed = (float) random.nextInt(50);
-
-			Color randColor = RandomColor();
-
-
-			//load up array
-			Ball ball = new Ball(new Vector2(randX,randY),randSize,new Vector2(randSpeed,randSpeed));
-			balls.add(ball);
-		}
-	}
-
-
-	public Color RandomColor()
-	{
-		random = new Random();
-		int r = random.nextInt(70);
-		int g = 20;
-		int b = 20;
-		int a = 100;
-
-		return new Color(r,g,b,a);
-	}
+	
 }
