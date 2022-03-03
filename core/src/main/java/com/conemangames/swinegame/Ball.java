@@ -4,16 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 
 import java.util.Random;
 
 public class Ball
 {
-	Vector2 position;
-	int size;
-	Vector2 speed;
-	Color color;
-	Random random;
+	public Vector2 position;
+	public int size;
+	public Vector2 speed;
+	public Color color;
+	public Random random;
+
 
 	//for hitting sides
 	Color cRed = new Color(200,0,0,1);

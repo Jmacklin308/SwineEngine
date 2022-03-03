@@ -76,7 +76,6 @@ public class SwineGame extends ApplicationAdapter
 		//update physics debug (must be done before physics step
 		debugRenderer.render(world, camera.combined);
 
-
 		//update physics step
 		world.step(1/60f, 6,2);
 	}
