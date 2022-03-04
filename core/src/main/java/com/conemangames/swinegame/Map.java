@@ -16,18 +16,6 @@ public class Map
     public int mapWidth = 15;
     public int mapHeight = 9;
     public int tileSize = 128;
-    
-    
-    public void Load()
-    {
-        wallTexture = new Texture("blackPixle.png");
-    }
-    
-    public void CheckCollision(Rectangle input)
-    {
-        for (int i = 0; i < walls.size(); i++) {
-            if(walls.get(i) != null && walls.get(i).wall.)
-        }
-    }
+
 }
 
