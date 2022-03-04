@@ -10,18 +10,12 @@ import java.util.Random;
 
 public class Ball
 {
-	public Vector2 position;
-	public int size;
-	public Vector2 speed;
-	public Color color;
-	public Random random;
+	Vector2 position;
+	int size;
+	Vector2 speed;
+	Color color;
+	Random random = new Random();
 
-
-	//for hitting sides
-	Color cRed = new Color(200,0,0,1);
-	Color cBlue = new Color(0,0,200,1);
-	Color cGreen = new Color(0,200,0,1);
-	Color cWhite = new Color(200,200,200,1);
 
 	//constructor
 	public Ball(Vector2 position, int size, Vector2 speed)
@@ -30,11 +24,7 @@ public class Ball
 		this.size = size;
 		this.speed = speed;
 
-		//create random object
-		random = new Random();
-
-		color = Color.CYAN;
-
+		color = SetRandomColor();
 	}
 
 	public void Update()
@@ -43,34 +33,26 @@ public class Ball
 		position.x += speed.x * dt;
 		position.y += speed.y * dt;
 
-		if(position.x > Gdx.graphics.getWidth() )
+		if(position.x > Gdx.graphics.getWidth() || position.x < 0)
 		{
-			color = cRed;
-			speed.x = -speed.x;
-		}else if(position.x < 0)
-		{
-			color = cBlue;
 			speed.x = -speed.x;
 		}
-		if(position.y > Gdx.graphics.getHeight())
+		if(position.y > Gdx.graphics.getHeight() || position.y < 0)
 		{
-			color = cGreen;
-			speed.y = -speed.y;
-		}else if(position.y < 0) {
-			color = cWhite;
 			speed.y = -speed.y;
 		}
 	}
 
 
-	public void SetRandomColor()
+	public Color SetRandomColor()
 	{
 		float r = random.nextFloat();
 		float g = random.nextFloat();
 		float b = random.nextFloat();
 		float a = 100;
 
-		color = new Color(r,g,b,a);
+		return new Color(r,g,b,a);
+
 	}
 
 
