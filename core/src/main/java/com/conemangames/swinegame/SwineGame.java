@@ -46,13 +46,12 @@ public class SwineGame extends ApplicationAdapter
 	{
 		//clear background
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		Gdx.gl.glClearColor(255,255,255,1);
 		
 		//update framerate;
 		frameRate.update();
 		UpdateObjects();
-		spriteBatch.begin();
 		DrawObjects();
-		spriteBatch.end();
 		
 		//draw framerate on top
 		frameRate.render();
@@ -61,14 +60,12 @@ public class SwineGame extends ApplicationAdapter
 	@Override
 	public void dispose()
 	{
-	
 	}
-	
 	
 	
 	public void LoadLevel()
 	{
-		objects.add(new Player(new Vector2(640,360)));
+		objects.add(new Player(new Vector2(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f)));
 		
 		LoadObjects();
 	}

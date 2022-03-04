@@ -12,6 +12,7 @@ public class Player extends GameObject
 {
     private float speed = 5f;
     
+    
     public Player()
     {
     
@@ -27,14 +28,15 @@ public class Player extends GameObject
     @Override
     public void Create()
     {
+        //load our texture first
+        texture = new Texture("DapperDoggo.png");
+        scale = 0.5f;
         super.Create();
     }
     
     @Override
     public void Load()
     {
-        //load our texture first
-        texture = new Texture("img.png");
         super.Load();
     }
     

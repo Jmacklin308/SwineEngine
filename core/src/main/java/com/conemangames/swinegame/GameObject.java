@@ -30,7 +30,6 @@ public class GameObject
     public void Create()
     {
         center = new Vector2().setZero();
-    
     }
     
     
@@ -49,23 +48,18 @@ public class GameObject
     //Called every frame. Update draw calls here
     public void Draw(SpriteBatch spriteBatch)
     {
+        spriteBatch.begin();
         if (texture != null && active)
         {
-            spriteBatch.draw(texture,position.x,
+            spriteBatch.draw(
+                    texture,
+                    position.x,
                     position.y,
-                    center.x,
-                    center.y,
-                    texture.getWidth(),
-                    texture.getHeight(),
-                    scale,scale,rotation,
-                    1,
-                    1,
-                    1,
-                    1,
-                    false,
-                    false
+                    texture.getWidth()*scale,
+                    texture.getHeight()*scale
             );
         }
+        spriteBatch.end();
     }
     
     private void CalculateCenter()
