@@ -107,9 +107,9 @@ public class SwineGame extends ApplicationAdapter
 
 
 		//3d model draw todo: incorporate into game-object class
-		modelBatch.begin(cam);
-		modelBatch.render(instances, environment);
-		modelBatch.end();
+//		modelBatch.begin(cam);
+//		modelBatch.render(instances, environment);
+//		modelBatch.end();
 
 
 		//draw framerate on top
@@ -126,7 +126,12 @@ public class SwineGame extends ApplicationAdapter
 
 	public void LoadLevel()
 	{
-		objects.add(new Player(new Vector2(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f)));
+		Player player = new Player(new Vector2(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f));
+		objects.add(player);
+		player.active = false;
+		//add soldier
+		objects.add(new Soldier());
+
 
 		LoadObjects();
 	}
@@ -156,6 +161,12 @@ public class SwineGame extends ApplicationAdapter
 		for (int i = 0; i < objects.size(); i++)
 		{
 			objects.get(i).Draw(spriteBatch);
+
+			//render 3d if model exist
+			if(objects.get(i).model != null)
+			{
+				objects.get(i).Draw(modelBatch,cam,environment);
+			}
 		}
 	}
 }

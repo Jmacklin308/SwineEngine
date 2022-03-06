@@ -1,9 +1,12 @@
 package com.conemangames.swinegame;
 
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g3d.Environment;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -21,7 +24,9 @@ public class GameObject
     public float rotation = 0f;
     public float layerDepth = .5f;
     public boolean active = true;
+    public boolean _static = false;
     protected Vector2 center;
+    public Model model;
 
     public GameObject()
     {
@@ -61,6 +66,14 @@ public class GameObject
             );
         }
         spriteBatch.end();
+
+    }
+
+    public void Draw(ModelBatch modelBatch, Camera camera, Environment environment)
+    {
+        modelBatch.begin(camera);
+        modelBatch.render(new ModelInstance(model), environment);
+        modelBatch.end();
     }
     
     private void CalculateCenter()
