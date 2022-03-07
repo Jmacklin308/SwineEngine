@@ -25,6 +25,7 @@ public class GameObject
     public float layerDepth = .5f;
     public boolean active = true;
     public boolean _static = false;
+    public boolean is3d = false;
     protected Vector2 center;
     public Model model;
 
@@ -54,6 +55,8 @@ public class GameObject
     //Called every frame. Update draw calls here
     public void Draw(SpriteBatch spriteBatch)
     {
+        is3d = false;
+        
         spriteBatch.begin();
         if (texture != null && active)
         {
@@ -71,6 +74,7 @@ public class GameObject
 
     public void Draw(ModelBatch modelBatch, Camera camera, Environment environment)
     {
+        is3d = true;
         modelBatch.begin(camera);
         modelBatch.render(new ModelInstance(model), environment);
         modelBatch.end();
