@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
 import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.CameraInputController;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.*;
 
 import java.util.ArrayList;
 
@@ -23,25 +24,29 @@ public class SwineGame extends ApplicationAdapter
 	private ArrayList<GameObject> objects;
 	private SpriteBatch spriteBatch;
 
+	
+	//for physics
+	private World world;
+
 	//for 3D functionality
 	PerspectiveCamera cam;
 	CameraInputController camController;
 	ModelBatch modelBatch;
 	Environment environment;
-
-	//testing 3d
-	Model model;
-	ModelInstance ground;
-	ModelInstance ball;
-
+	
+	
+	
 	@Override
 	public void create()
 	{
 		frameRate = new FrameRate();
 		spriteBatch = new SpriteBatch();
 
-		//initialize list
 		objects = new ArrayList<>();
+
+		//box2d world
+		world = new World(new Vector2(0,0),true);
+
 
 		loadLevel();
 
@@ -60,7 +65,7 @@ public class SwineGame extends ApplicationAdapter
 		//camera controller
 		camController = new CameraInputController(cam);
 		Gdx.input.setInputProcessor(camController);
-
+		
 	}
 
 	@Override
@@ -73,29 +78,36 @@ public class SwineGame extends ApplicationAdapter
 		Gdx.gl.glClearColor(0.3f, 0.3f, 0.3f, 1.f);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
-		//update framerate
+		//update framerate counter
 		frameRate.update();
+		
+
+		
+		//call update and draw
 		updateObjects();
 		drawObjects();
 
-
-		//draw framerate on top
+		//draw framerate counter on top
 		frameRate.render();
 	}
 
 	@Override
 	public void dispose()
 	{
-		modelBatch.dispose();
-		model.dispose();
+		//runs at the end of the program
 	}
 
+	
+	
+	
+	// object loading-------------------------------------------------------------------------
 
 	public void loadLevel()
 	{
-		Player player = new Player(new Vector2(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f));
+		Player player = new Player(new Vector2(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f),0);
+		player.initializePhysics(world, BodyDef.BodyType.DynamicBody,1,2);
+		
 		objects.add(player);
-		//add soldier
 
 
 		//initially load objects at start
@@ -107,32 +119,42 @@ public class SwineGame extends ApplicationAdapter
 	{
 		for (int i = 0; i < objects.size(); i++)
 		{
-			objects.get(i).Create();
-			objects.get(i).Load();
+			objects.get(i).create();
+			objects.get(i).load();
 		}
 	}
-
 
 	public void updateObjects()
 	{
 		for (int i = 0; i < objects.size(); i++)
 		{
-			objects.get(i).Update(objects);
+			objects.get(i).update(objects);
 		}
 	}
-
 
 	public void drawObjects()
 	{
 		for (int i = 0; i < objects.size(); i++)
 		{
-			objects.get(i).Draw(spriteBatch);
+			objects.get(i).draw(spriteBatch);
 
 			//render 3d if model exist
 			if(objects.get(i).model != null)
 			{
-				objects.get(i).Draw(modelBatch,cam,environment);
+				objects.get(i).draw(modelBatch,cam,environment);
 			}
 		}
 	}
+	
+	
+	
+	//for physics------------------------------------------------------------
+	
+	
+	
+	
+	
+	
+	
+	
 }
