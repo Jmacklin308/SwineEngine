@@ -4,8 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
+
 
 import java.util.List;
 
@@ -14,15 +13,16 @@ public class Player extends GameObject
     private float speed = 5f;
     
     
-    public Player() {}
+    public Player() {
+        // for debugging
+    }
     
     
-    public Player(Vector2 inputPosition, float angle)
+    public Player(Vector2 inputPosition, float angle, float scale)
     {
          this.position = inputPosition;
          this.angle = angle;
-
-       
+         this.scale = scale;
     }
     
     
@@ -31,11 +31,6 @@ public class Player extends GameObject
     {
         //load our texture first
         texture = new Texture("DapperDoggo.png");
-        scale = 0.5f;
-        
-
-        
-        
         super.create();
     }
     

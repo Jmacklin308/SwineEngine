@@ -24,17 +24,19 @@ public class SwineGame extends ApplicationAdapter
 	private ArrayList<GameObject> objects;
 	private SpriteBatch spriteBatch;
 
-	
 	//for physics
 	private World world;
+	private float accumulator;
+	static final float BOX_STEP=1/120f;
+	static final int  BOX_VELOCITY_ITERATIONS=8;
+	static final int BOX_POSITION_ITERATIONS=3;
+	
 
 	//for 3D functionality
 	PerspectiveCamera cam;
 	CameraInputController camController;
 	ModelBatch modelBatch;
 	Environment environment;
-	
-	
 	
 	@Override
 	public void create()
@@ -47,9 +49,8 @@ public class SwineGame extends ApplicationAdapter
 		//box2d world
 		world = new World(new Vector2(0,0),true);
 
-
 		loadLevel();
-
+		
 		//3D setup
 		modelBatch = new ModelBatch();
 		environment = new Environment();
@@ -65,7 +66,6 @@ public class SwineGame extends ApplicationAdapter
 		//camera controller
 		camController = new CameraInputController(cam);
 		Gdx.input.setInputProcessor(camController);
-		
 	}
 
 	@Override
@@ -81,37 +81,39 @@ public class SwineGame extends ApplicationAdapter
 		//update framerate counter
 		frameRate.update();
 		
-
-		
 		//call update and draw
+		updatePhysics(Gdx.graphics.getDeltaTime());
 		updateObjects();
 		drawObjects();
 
 		//draw framerate counter on top
 		frameRate.render();
 	}
-
-	@Override
-	public void dispose()
-	{
-		//runs at the end of the program
-	}
-
 	
+	private void updatePhysics(float dt)
+	{
+		accumulator += dt;
+		while(accumulator>BOX_STEP)
+		{
+			world.step(BOX_STEP,BOX_VELOCITY_ITERATIONS,BOX_POSITION_ITERATIONS);
+			accumulator-=BOX_STEP;
+		}
+   }
 	
 	
 	// object loading-------------------------------------------------------------------------
-
 	public void loadLevel()
 	{
-		Player player = new Player(new Vector2(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f),0);
-		player.initializePhysics(world, BodyDef.BodyType.DynamicBody,1,2);
-		
+		Player player = new Player(new Vector2(Gdx.graphics.getWidth()/2f, Gdx.graphics.getHeight()/2f),0,0.2f);
 		objects.add(player);
-
+		
+		Obstacle obstacle = new Obstacle(new Vector2(0,0),0,0.2f);
+		objects.add(obstacle);
 
 		//initially load objects at start
 		loadObjects();
+		player.initializePhysics(world, BodyDef.BodyType.DynamicBody,1,2);
+		obstacle.initializePhysics(world, BodyDef.BodyType.StaticBody,1,2);
 	}
 
 	//load up objects
@@ -145,16 +147,4 @@ public class SwineGame extends ApplicationAdapter
 			}
 		}
 	}
-	
-	
-	
-	//for physics------------------------------------------------------------
-	
-	
-	
-	
-	
-	
-	
-	
 }

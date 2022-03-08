@@ -28,15 +28,12 @@ public class GameObject
     public Model model;
     
     
-    
     //physics
     static final float WORLD_TO_BOX = 0.01f;
 	static final float BOX_WORLD_TO = 100f;
-	static final float BOX_STEP=1/120f;
-	static final int BOX_VELOCITY_ITERATIONS = 8;
-	static final int BOX_POSITION_ITERATIONS = 3;
-    float accumulator;
-	private Body body;
+    private Body body;
+    private World world;
+    
 
     public GameObject()
     {
@@ -55,11 +52,11 @@ public class GameObject
         calculateCenter();
     }
 
-    //Called every frame. Update logic here
     public void update(List<GameObject> objects)
     {
-        //update logic here
+        //pass
     }
+
     
     //Called every frame. Update draw calls here
     public void draw(SpriteBatch spriteBatch)
@@ -105,18 +102,19 @@ public class GameObject
         if(texture == null)
             return;
         
+        world.setContactListener(new SwineContactListener(this));
         
-        createBody(world,position,angle);
-        makeRectFixture(texture.getWidth(), texture.getHeight(),bodyType,density,restitution,position,angle);
+        createBody(world,position,angle,bodyType);
+        makeRectFixture(texture.getWidth(), texture.getHeight(),density,restitution);
     }
     
     
     
     //Physics setup-------------------------------
-    private void createBody(World world, Vector2 pos, float angle)
+    private void createBody(World world, Vector2 pos, float angle, BodyDef.BodyType bodyType)
 	{
 		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = BodyDef.BodyType.DynamicBody;
+		bodyDef.type = bodyType;
 		bodyDef.position.set(convertToBox(pos.x), convertToBox(pos.y));
 		bodyDef.angle = angle;
 		body = world.createBody(bodyDef);
@@ -124,7 +122,7 @@ public class GameObject
     
     
     //creates fixture and applies it to the objects body
-    private void makeRectFixture(float width, float height, BodyDef.BodyType bodyType, float density, float restitution, Vector2 pos, float angle)
+    private void makeRectFixture(float width, float height,  float density, float restitution)
 	{
 		PolygonShape bodyShape = new PolygonShape();
 		float w = convertToBox(width/2f);
@@ -145,6 +143,4 @@ public class GameObject
 	{
     	return x*WORLD_TO_BOX;
 	}
- 
-    
 }
