@@ -119,10 +119,9 @@ public class SwineGame extends ApplicationAdapter
 	//load up objects
 	public void loadObjects()
 	{
-		for (int i = 0; i < objects.size(); i++)
-		{
-			objects.get(i).create();
-			objects.get(i).load();
+		for (GameObject object : objects) {
+			object.create();
+			object.load();
 		}
 	}
 

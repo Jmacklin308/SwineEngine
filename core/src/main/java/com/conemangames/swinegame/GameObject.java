@@ -27,14 +27,12 @@ public class GameObject
     protected Vector2 center;
     public Model model;
     
-    
     //physics
     static final float WORLD_TO_BOX = 0.01f;
 	static final float BOX_WORLD_TO = 100f;
     private Body body;
     private World world;
     
-
     public GameObject()
     {
         //base constructor. good to have for debugging
@@ -45,7 +43,6 @@ public class GameObject
         center = new Vector2().setZero();
     }
     
-
     // Ran first
     public void load()
     {
@@ -56,7 +53,6 @@ public class GameObject
     {
         //pass
     }
-
     
     //Called every frame. Update draw calls here
     public void draw(SpriteBatch spriteBatch)
@@ -78,6 +74,7 @@ public class GameObject
 
     }
 
+    //called every frame on the main thread
     public void draw(ModelBatch modelBatch, Camera camera, Environment environment)
     {
         is3d = true;
@@ -86,6 +83,7 @@ public class GameObject
         modelBatch.end();
     }
     
+    //called locally
     private void calculateCenter()
     {
         if(texture == null)
@@ -94,7 +92,6 @@ public class GameObject
         center.x = texture.getWidth() / 2f;
         center.y = texture.getHeight() / 2f;
     }
-    
     
     
     public void initializePhysics(World world,BodyDef.BodyType bodyType,float density, float restitution)
@@ -109,7 +106,6 @@ public class GameObject
     }
     
     
-    
     //Physics setup-------------------------------
     private void createBody(World world, Vector2 pos, float angle, BodyDef.BodyType bodyType)
 	{
@@ -121,7 +117,7 @@ public class GameObject
 	}
     
     
-    //creates fixture and applies it to the objects body
+    // (for physics) creates an fixture and applies it to the object's body
     private void makeRectFixture(float width, float height,  float density, float restitution)
 	{
 		PolygonShape bodyShape = new PolygonShape();
