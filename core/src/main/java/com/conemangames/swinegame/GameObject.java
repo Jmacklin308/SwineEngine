@@ -28,10 +28,11 @@ public class GameObject
     public Model model;
     
     //physics
-    static final float WORLD_TO_BOX = 0.01f;
-	static final float BOX_WORLD_TO = 100f;
-    private Body body;
+    public Body body;
     private World world;
+    public boolean isStatic = false;
+    public boolean isKinematic = false;
+    public boolean hasFixedRotation = true;
     
     public GameObject()
     {
@@ -41,6 +42,37 @@ public class GameObject
     public void create()
     {
         center = new Vector2().setZero();
+        if(world != null) body = createObjectBody();
+        
+    }
+    
+    private Body createObjectBody()
+    {
+        
+        Body pbody;
+        
+        BodyDef def = new BodyDef(); // properties of the body
+        
+        if(isStatic) def.type = BodyDef.BodyType.StaticBody;
+        else if(isKinematic) def.type = BodyDef.BodyType.KinematicBody;
+        else def.type = BodyDef.BodyType.DynamicBody;
+        
+        def.position.set(position);
+        def.fixedRotation = hasFixedRotation;
+        
+        //initialize body
+        pbody = world.createBody(def);
+        
+        //give shape
+        PolygonShape shape = new PolygonShape();
+        shape.setAsBox(32 /2, 32/2);
+        
+        body.createFixture(shape, 1.0f);
+        
+        //clean up
+        shape.dispose();
+        
+        return pbody;
     }
     
     // Ran first
@@ -93,50 +125,5 @@ public class GameObject
         center.y = texture.getHeight() / 2f;
     }
     
-    
-    public void initializePhysics(World world,BodyDef.BodyType bodyType,float density, float restitution)
-    {
-        if(texture == null)
-            return;
-        
-        world.setContactListener(new SwineContactListener(this));
-        
-        createBody(world,position,angle,bodyType);
-        makeRectFixture(texture.getWidth(), texture.getHeight(),density,restitution);
-    }
-    
-    
-    //Physics setup-------------------------------
-    private void createBody(World world, Vector2 pos, float angle, BodyDef.BodyType bodyType)
-	{
-		BodyDef bodyDef = new BodyDef();
-		bodyDef.type = bodyType;
-		bodyDef.position.set(convertToBox(pos.x), convertToBox(pos.y));
-		bodyDef.angle = angle;
-		body = world.createBody(bodyDef);
-	}
-    
-    
-    // (for physics) creates an fixture and applies it to the object's body
-    private void makeRectFixture(float width, float height,  float density, float restitution)
-	{
-		PolygonShape bodyShape = new PolygonShape();
-		float w = convertToBox(width/2f);
-		float h = convertToBox(height/2f);
-		bodyShape.setAsBox(w,h);
-		
-		FixtureDef fixtureDef = new FixtureDef();
-		fixtureDef.density = density;
-		fixtureDef.restitution = restitution;
-		fixtureDef.shape = bodyShape;
-		
-		body.createFixture(fixtureDef);
-		bodyShape.dispose();
-	}
-    
-    
-    private float convertToBox(float x)
-	{
-    	return x*WORLD_TO_BOX;
-	}
+   
 }

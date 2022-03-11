@@ -3,7 +3,7 @@ package com.conemangames.swinegame;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.PerspectiveCamera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g3d.*;
 import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
@@ -26,14 +26,11 @@ public class SwineGame extends ApplicationAdapter
 
 	//for physics
 	private World world;
-	private float accumulator;
-	static final float BOX_STEP=1/120f;
-	static final int  BOX_VELOCITY_ITERATIONS=8;
-	static final int BOX_POSITION_ITERATIONS=3;
-	
+	private ArrayList<Body> bodies;
+	private Box2DDebugRenderer b2dr; //debugging physics
 
 	//for 3D functionality
-	PerspectiveCamera cam;
+	OrthographicCamera cam;
 	CameraInputController camController;
 	ModelBatch modelBatch;
 	Environment environment;
@@ -46,9 +43,17 @@ public class SwineGame extends ApplicationAdapter
 
 		objects = new ArrayList<>();
 
-		//box2d world
+		//box2d physics
 		world = new World(new Vector2(0,0),true);
-
+		bodies = new ArrayList<>();
+		b2dr = new Box2DDebugRenderer();
+		
+		
+	
+		
+		
+		
+		//load the starter level
 		loadLevel();
 		
 		//3D setup
@@ -58,7 +63,7 @@ public class SwineGame extends ApplicationAdapter
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
 		// camera setup
-		cam = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		cam = new OrthographicCamera();
 		cam.position.set(3f, 7f, 10f);
 		cam.lookAt(0, 4f, 0);
 		cam.update();
@@ -66,11 +71,20 @@ public class SwineGame extends ApplicationAdapter
 		//camera controller
 		camController = new CameraInputController(cam);
 		Gdx.input.setInputProcessor(camController);
+		
+		
+		//initialize all the physics bodies of objects
+		for (int i = 0; i < objects.size(); i++) {
+		
+		}
 	}
 
 	@Override
 	public void render()
 	{
+		//update physics
+		world.step(1/60f,6,2);
+		
 		//control camera
 		camController.update();
 
@@ -82,23 +96,30 @@ public class SwineGame extends ApplicationAdapter
 		frameRate.update();
 		
 		//call update and draw
-		updatePhysics(Gdx.graphics.getDeltaTime());
 		updateObjects();
 		drawObjects();
+		
+		//debug
+		b2dr.render(world,cam.combined);
 
 		//draw framerate counter on top
 		frameRate.render();
 	}
 	
-	private void updatePhysics(float dt)
+	@Override
+	public void resize(int width, int height)
 	{
-		accumulator += dt;
-		while(accumulator>BOX_STEP)
-		{
-			world.step(BOX_STEP,BOX_VELOCITY_ITERATIONS,BOX_POSITION_ITERATIONS);
-			accumulator-=BOX_STEP;
-		}
-   }
+		cam.setToOrtho(false,width/2,height/2);
+	}
+	
+	
+	@Override
+	public void dispose()
+	{
+		frameRate.dispose();
+		world.dispose();
+		b2dr.dispose();
+	}
 	
 	
 	// object loading-------------------------------------------------------------------------
@@ -112,8 +133,11 @@ public class SwineGame extends ApplicationAdapter
 
 		//initially load objects at start
 		loadObjects();
-		player.initializePhysics(world, BodyDef.BodyType.DynamicBody,1,2);
-		obstacle.initializePhysics(world, BodyDef.BodyType.StaticBody,1,2);
+		
+		//add physics bodies to list array
+		for (int i = 0; i < objects.size(); i++) {
+			bodies.add(objects.get(i).body);
+		}
 	}
 
 	//load up objects
